@@ -15,7 +15,7 @@ y = 250
 width = 20
 height = 20
 vel = 5
-score = 4
+score = 0
 gruning = True
 faceing = 0
 nibbleX = 0
@@ -67,6 +67,7 @@ while gruning:
         RenderText("Press any key to start",100,100,(255,255,255),30)
         pressed = keys
 
+        
 
         if (event.type == pygame.KEYDOWN) or (event.type == pygame.MOUSEBUTTONDOWN):
             gamestate = 2
