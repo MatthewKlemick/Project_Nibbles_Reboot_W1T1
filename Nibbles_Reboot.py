@@ -195,7 +195,7 @@ while gruning:
 
         win.fill((0,0,0))
         score_text = " your final score is = " + str(score)
-        RenderText("Game Over",100,100,(255,255,255),80)
+        RenderText("Game Over",100,100,(255,0,0),80)
         RenderText(score_text,100,150,(255,255,255),30)
         RenderText("Press any key to try again",100,200,(255,255,255),30)
         pygame.display.update()
