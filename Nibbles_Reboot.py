@@ -10,6 +10,10 @@ screanwith = 500
 screansize = (screanwith,screanhight)
 win = pygame.display.set_mode(screansize)
 pygame.display.set_caption("Nibbles Reboot")
+game_over = pygame.mixer.Sound("game_over.wav")
+game_start = pygame.mixer.Sound("game_start.wav")
+intro_music = pygame.mixer.Sound("intro_music.wav")
+pickup_nibble = pygame.mixer.Sound("pickup_nibble.wav")
 x = 250
 y = 250
 width = 20
@@ -32,6 +36,11 @@ gamestate = 1
 score_text = "score ="
 nibble_Active = False
 nibbles_image = pygame.image.load('swerl.png')
+introM = False
+fxplaying = False
+fxplaying2 = False
+pygame.mixer.Channel(1)
+pygame.mixer.Channel(2)
 #(255,255,0)
 
 def RenderText(text,x,y,TXTcolor=(255,255,255),size=30,):
@@ -66,14 +75,24 @@ while gruning:
         win.blit(nibbles_image, (100,150))
         RenderText("Press any key to start",100,100,(255,255,255),30)
         pressed = keys
-
+        if introM == False:
+            pygame.mixer.Channel(1).play(intro_music, 0, -1,50)
+            introM = True
+            
+        event = pygame.event.wait()
         
-
         if (event.type == pygame.KEYDOWN) or (event.type == pygame.MOUSEBUTTONDOWN):
+            pygame.mixer.Channel(1).fadeout(300)
             gamestate = 2
+            introM = False
 
     elif gamestate == 2:
         win.fill((25,25,255))
+        if fxplaying == False:
+            pygame.mixer.Channel(2).play(game_start, 0, -1,0)
+            fxplaying = True
+        
+        
 
 
         if keys [pygame.K_LEFT]and not faceing == 2:
@@ -106,12 +125,16 @@ while gruning:
 
         
         if snakePX[0] > 470 :
+            fxplaying, fxplaying2 = False ,False
             gamestate = 3
         elif snakePY[0] > 470:
+            fxplaying, fxplaying2 = False ,False
             gamestate = 3
         elif snakePX[0] < 10:
+            fxplaying, fxplaying2 = False ,False
             gamestate = 3
         elif snakePY[0] < 10:
+            fxplaying, fxplaying2 = False ,False
             gamestate = 3
 
         pygame.draw.rect(win,(255,128,0), (0, 0, 500, 10))
@@ -127,7 +150,9 @@ while gruning:
                 vel = vel + 1
                 score = score + 1
                 nibble_Active = False
-
+                
+                pygame.mixer.Channel(2).play(pickup_nibble, 0, -1,0)
+                 
         else:
             nibbleX , nibbleY = r(screanwith,screanhight)
             nibble_Active = True
@@ -157,6 +182,9 @@ while gruning:
             objs = True
 
     elif gamestate == 3:
+        if fxplaying2 == False:
+            pygame.mixer.Channel(2).play(game_over, 0, -1,0)
+            fxplaying2 = True
 
         win.fill((0,0,0))
         score_text = " your final score is = " + str(score)
@@ -169,8 +197,8 @@ while gruning:
         if (event.type == pygame.KEYDOWN) or (event.type == pygame.MOUSEBUTTONDOWN):
             nibble_Active = False
             objs = False
-            objX = []
-            objY = []
+            objX = [0]
+            objY = [0]
             x = 250
             y = 250
             vel = 5
@@ -181,6 +209,8 @@ while gruning:
             snakePX = [250]
             snakePY = [250]
             score = 0
+            fxplaying = False
+            fxplaying2 = True
             gamestate = 2
 
     pygame.display.update() 
