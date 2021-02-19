@@ -2,7 +2,7 @@ import pygame
 import sys
 import random
 import time
-
+#seting up all of the global varibles
 pygame.init()
 pygame.font.init()
 screanhight = 500
@@ -43,12 +43,13 @@ pygame.mixer.Channel(1)
 pygame.mixer.Channel(2)
 #(255,255,0)
 
+# Function to make text appare on in the display
 def RenderText(text,x,y,TXTcolor=(255,255,255),size=30,):
 
     myfont = pygame.font.SysFont('Arial MT', size)
     textsurface = myfont.render(text, True, (TXTcolor))
     win.blit(textsurface,(x,y))
-
+# Function to render the snakes tale
 def tale():
     for x in range(len(snakePX)):
         snake = pygame.draw.rect(win,(255,255,0), (snakePX[x], snakePY[x], width, height))
@@ -56,7 +57,7 @@ def tale():
     if snakeL <= len(snakePX):
         snakePX.pop()
         snakePY.pop()
-
+# a Function use to come up with random cords
 def r(screanh,screanw):
     x2 = random.randrange(10, screanw - 30, 10)
     y2 = random.randrange(10, screanh - 30, 10)
@@ -68,8 +69,9 @@ while gruning:
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 gruning = False
-            
+
     win.fill((0,0,0))
+    # displays the menu when first started up 
     if  gamestate == 1:
         RenderText("Nibbles",100,50,(255,255,255),80)
         win.blit(nibbles_image, (100,150))
@@ -80,12 +82,12 @@ while gruning:
             introM = True
             
         event = pygame.event.wait()
-        
+        # starts up game when any key is pressed
         if (event.type == pygame.KEYDOWN) or (event.type == pygame.MOUSEBUTTONDOWN):
             pygame.mixer.Channel(1).fadeout(300)
             gamestate = 2
             introM = False
-
+   
     elif gamestate == 2:
         win.fill((25,25,255))
         if fxplaying == False:
@@ -94,7 +96,7 @@ while gruning:
         
         
 
-
+        # movement is handed here
         if keys [pygame.K_LEFT]and not faceing == 2:
             faceing = 1
         elif keys [pygame.K_RIGHT] and not faceing == 1:
@@ -123,7 +125,7 @@ while gruning:
 
         tale()
 
-        
+        # enforces the boundary
         if snakePX[0] > 470 :
             fxplaying, fxplaying2 = False ,False
             gamestate = 3
@@ -137,10 +139,14 @@ while gruning:
             fxplaying, fxplaying2 = False ,False
             gamestate = 3
 
+        
+         
         pygame.draw.rect(win,(255,128,0), (0, 0, 500, 10))
         pygame.draw.rect(win,(255,128, 0), (0, 490, 500, 10))
         pygame.draw.rect(win,(255,128, 0), (0, 0, 10, 500))
         pygame.draw.rect(win,(255,128, 0), (490, 0, 10, 500))
+
+        #sets up  a nibble at random cords once and handels snake length , spead and score
 
         if nibble_Active == True:
             pygame.draw.rect(win,(255, 255, 255), (nibbleX, nibbleY , width, height))
@@ -157,10 +163,11 @@ while gruning:
             nibbleX , nibbleY = r(screanwith,screanhight)
             nibble_Active = True
 
-        pygame.draw.rect(win,(0, 0, 0), (0, 0, 90, 30))
+        pygame.draw.rect(win,(0, 0, 0), (0, 0, 100, 30))
         score_text = "score = " + str(score)
         RenderText(score_text,0,0)
 
+        #sets up 3 obstacles at random cords once the score reaches 5 
         if len(objX) == 3:
             for v in range(len(objX)):
                 pygame.draw.rect(win,(255,128,0), (objX[v], objY[v], width, height))
@@ -193,7 +200,7 @@ while gruning:
         RenderText("Press any key to try again",100,200,(255,255,255),30)
         pygame.display.update()
         event = pygame.event.wait()
-
+        # starts up game when any key is pressed
         if (event.type == pygame.KEYDOWN) or (event.type == pygame.MOUSEBUTTONDOWN):
             nibble_Active = False
             objs = False
@@ -212,7 +219,8 @@ while gruning:
             fxplaying = False
             fxplaying2 = True
             gamestate = 2
-
+    #updates the display with changes
     pygame.display.update() 
+# allows pygame to stop when you X out of the window
 pygame.quit()
 
