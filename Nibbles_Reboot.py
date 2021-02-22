@@ -63,6 +63,12 @@ def r(screanh,screanw):
     y2 = random.randrange(10, screanh - 30, 10)
     return  x2 , y2
 
+def test_r():
+    E , Q =  r(500,500)   
+    assert type(E) == int and type(Q) == int ,"Test faied the random numbers are not ints"
+    assert E < 470 and Q < 470,"Test faied the random numbers were to high"
+    assert E > 10 and Q > 10,"Test faied the random numbers were to low"
+
 while gruning:
     keys = pygame.key.get_pressed()  
     pygame.time.delay(100)
